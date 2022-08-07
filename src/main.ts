@@ -1,8 +1,31 @@
+import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import {
+  FastifyAdapter,
+  NestFastifyApplication,
+} from '@nestjs/platform-fastify';
 import { AppModule } from './app.module';
+import { readFileSync } from 'fs';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  await app.listen(3000);
+  const httpsOptions = {
+    key: readFileSync(process.env.KEY ?? ''),
+    cert: readFileSync(process.env.CRT ?? ''),
+  };
+
+  const enableHTTP2 = (process.env.HTTP2 ?? 'true').toLowerCase() == 'true';
+
+  const app = await NestFactory.create<NestFastifyApplication>(
+    AppModule,
+    new FastifyAdapter({
+      https: httpsOptions,
+      ...(enableHTTP2 ? { http2: true } : null),
+    }),
+  );
+
+  const port = process.env.PORT || 8080;
+  await app.listen(port);
+
+  Logger.log(`🚀 Application is running on: https://localhost:${port}`);
 }
 bootstrap();
