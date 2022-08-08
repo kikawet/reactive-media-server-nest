@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { Response as Res } from 'express';
 
 describe('AppController', () => {
   let appController: AppController;
@@ -15,8 +17,8 @@ describe('AppController', () => {
   });
 
   describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(appController.getHello()).toBe('Hello World!');
+    it('should redirect to video controller"', () => {
+      // return expect(appController.redirect(response));
     });
   });
 });

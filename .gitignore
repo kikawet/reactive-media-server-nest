@@ -40,3 +40,7 @@ lerna-debug.log*
 
 # Secrets
 .env
+
+# Prisma
+/prisma/*
+!schema.prisma

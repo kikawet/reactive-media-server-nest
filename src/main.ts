@@ -5,6 +5,7 @@ import {
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { AppModule } from './app.module';
+import { PrismaService } from './prisma/prisma.service';
 import { readFileSync } from 'fs';
 
 async function bootstrap() {
@@ -22,6 +23,9 @@ async function bootstrap() {
       ...(enableHTTP2 ? { http2: true } : null),
     }),
   );
+
+  const prismaService = app.get(PrismaService);
+  await prismaService.enableShutdownHooks(app);
 
   const port = process.env.PORT || 8080;
   await app.listen(port);
