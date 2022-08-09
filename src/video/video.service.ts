@@ -22,4 +22,10 @@ export class VideoService {
       orderBy,
     });
   }
+
+  async createVideos(
+    data: Prisma.VideoCreateManyInput[],
+  ): Promise<Prisma.BatchPayload> {
+    return this.db.video.createMany({ data, skipDuplicates: true });
+  }
 }
