@@ -44,3 +44,6 @@ lerna-debug.log*
 # Prisma
 /prisma/*
 !schema.prisma
+
+# Package Manager
+.yarn
