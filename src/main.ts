@@ -1,4 +1,4 @@
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import {
   FastifyAdapter,
@@ -28,6 +28,8 @@ async function bootstrap() {
   await prismaService.enableShutdownHooks(app);
 
   const port = process.env.PORT || 8080;
+
+  app.useGlobalPipes(new ValidationPipe());
   await app.listen(port);
 
   Logger.log(`🚀 Application is running on: https://localhost:${port}`);
