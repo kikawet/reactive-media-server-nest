@@ -16,6 +16,14 @@
     "noImplicitAny": true,
     "strictBindCallApply": true,
     "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "paths": {
+      "rms/file-loader": [
+        "libs/file-loader/src"
+      ],
+      "rms/file-loader/*": [
+        "libs/file-loader/src/*"
+      ]
+    }
   }
 }
