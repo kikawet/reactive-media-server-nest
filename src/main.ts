@@ -7,6 +7,7 @@ import {
 import { AppModule } from './app.module';
 import { PrismaService } from './prisma/prisma.service';
 import { readFileSync } from 'fs';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const httpsOptions = {
@@ -24,10 +25,11 @@ async function bootstrap() {
     }),
   );
 
+  const configService = app.get(ConfigService);
   const prismaService = app.get(PrismaService);
   await prismaService.enableShutdownHooks(app);
 
-  const port = process.env.PORT || 8080;
+  const port = configService.get('PORT');
 
   app.useGlobalPipes(new ValidationPipe());
   await app.listen(port);
