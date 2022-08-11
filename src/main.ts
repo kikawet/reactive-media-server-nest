@@ -8,16 +8,17 @@ import { AppModule } from './app.module';
 import { PrismaService } from './prisma/prisma.service';
 import { readFileSync } from 'fs';
 import { ConfigService } from '@nestjs/config';
+import { AppConfigModule } from './config/app-config.module';
 
 declare const module: any;
 
 async function bootstrap() {
-  const basicApp = await NestFactory.create<NestFastifyApplication>(
-    AppModule,
+  const configApp = await NestFactory.create<NestFastifyApplication>(
+    AppConfigModule,
     new FastifyAdapter(),
   );
 
-  let configService = basicApp.get(ConfigService);
+  const configService = configApp.get(ConfigService);
 
   const isHTTPS =
     configService.get('KEY') != undefined &&
@@ -38,7 +39,6 @@ async function bootstrap() {
     }),
   );
 
-  configService = app.get(ConfigService);
   const prismaService = app.get(PrismaService);
   await prismaService.enableShutdownHooks(app);
 
@@ -55,5 +55,7 @@ async function bootstrap() {
   const protocol = isHTTPS ? 'https' : 'http';
 
   Logger.log(`🚀 Application is running on: ${protocol}://localhost:${port}`);
+
+  configApp.close();
 }
 bootstrap();
