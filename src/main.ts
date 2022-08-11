@@ -9,23 +9,36 @@ import { PrismaService } from './prisma/prisma.service';
 import { readFileSync } from 'fs';
 import { ConfigService } from '@nestjs/config';
 
-async function bootstrap() {
-  const httpsOptions = {
-    key: readFileSync(process.env.KEY ?? ''),
-    cert: readFileSync(process.env.CRT ?? ''),
-  };
+declare const module: any;
 
-  const enableHTTP2 = (process.env.HTTP2 ?? 'true').toLowerCase() == 'true';
+async function bootstrap() {
+  const basicApp = await NestFactory.create<NestFastifyApplication>(
+    AppModule,
+    new FastifyAdapter(),
+  );
+
+  let configService = basicApp.get(ConfigService);
+
+  const isHTTPS =
+    configService.get('KEY') != undefined &&
+    configService.get('CRT') != undefined;
+
+  const httpsOptions = isHTTPS
+    ? {
+        key: readFileSync(configService.getOrThrow('KEY')),
+        cert: readFileSync(configService.getOrThrow('CRT')),
+      }
+    : {};
 
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     new FastifyAdapter({
       https: httpsOptions,
-      ...(enableHTTP2 ? { http2: true } : null),
+      ...(configService.get('HTTP2') ? { http2: true } : null),
     }),
   );
 
-  const configService = app.get(ConfigService);
+  configService = app.get(ConfigService);
   const prismaService = app.get(PrismaService);
   await prismaService.enableShutdownHooks(app);
 
@@ -34,6 +47,13 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   await app.listen(port);
 
-  Logger.log(`🚀 Application is running on: https://localhost:${port}`);
+  if (module.hot) {
+    module.hot.accept();
+    module.hot.dispose(() => app.close());
+  }
+
+  const protocol = isHTTPS ? 'https' : 'http';
+
+  Logger.log(`🚀 Application is running on: ${protocol}://localhost:${port}`);
 }
 bootstrap();

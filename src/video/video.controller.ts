@@ -1,7 +1,7 @@
 import { Body, Controller, Get, ParseArrayPipe, Post } from '@nestjs/common';
-import { VideoService } from './video.service';
 import { Video as VideoModel } from '@prisma/client';
 import { CreateVideoDto } from './dto/create-video.dto';
+import { VideoService } from './video.service';
 
 @Controller('video')
 export class VideoController {
