@@ -44,7 +44,9 @@ async function bootstrap() {
 
   const port = configService.get('PORT');
 
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({ forbidNonWhitelisted: true, whitelist: true }),
+  );
   await app.listen(port);
 
   if (module.hot) {

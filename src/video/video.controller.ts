@@ -14,7 +14,13 @@ export class VideoController {
 
   @Post()
   createMany(
-    @Body(new ParseArrayPipe({ items: CreateVideoDto }))
+    @Body(
+      new ParseArrayPipe({
+        items: CreateVideoDto,
+        forbidNonWhitelisted: true,
+        whitelist: true,
+      }),
+    )
     videoArray: CreateVideoDto[],
   ) {
     return this.videoService.createVideos(videoArray).then((payload) => {
