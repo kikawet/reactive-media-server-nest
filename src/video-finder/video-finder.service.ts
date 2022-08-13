@@ -3,8 +3,8 @@ import { ConfigService } from '@nestjs/config';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { join, parse } from 'path';
 import { FileLoaderService } from 'rms/file-loader';
-import { CreateVideoDto } from 'src/video/dto/create-video.dto';
-import { VideoService } from 'src/video/video.service';
+import { CreateVideoDto } from '../video/dto/create-video.dto';
+import { VideoService } from '../video/video.service';
 
 @Injectable()
 export class VideoFinderService {

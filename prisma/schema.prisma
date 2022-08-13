@@ -11,6 +11,13 @@ datasource db {
 }
 
 model Video {
-  title String @id
-  url String
+  title        String  @id
+  url          String
+  isPrivate      Boolean @default(false)
+  allowedUsers User[]
+}
+
+model User {
+  login         String  @id
+  privateVideos Video[]
 }

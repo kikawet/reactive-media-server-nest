@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsUrl } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsUrl, IsOptional } from 'class-validator';
 
 export class CreateVideoDto {
   @IsNotEmpty()
@@ -9,4 +9,8 @@ export class CreateVideoDto {
     protocols: ['https'],
   })
   public url: string;
+
+  @IsBoolean()
+  @IsOptional()
+  public isPrivate?: boolean;
 }
