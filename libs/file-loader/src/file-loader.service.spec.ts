@@ -21,4 +21,10 @@ describe('FileLoaderService', () => {
 
     expect(files.length).toBeGreaterThan(0);
   });
+
+  it('should load advanced info', async () => {
+    const files = await service.advancedScanFolder('.');
+
+    expect(files.length).toEqual(0); // no videos in main folder
+  });
 });

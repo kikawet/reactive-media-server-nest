@@ -13,11 +13,25 @@ datasource db {
 model Video {
   title        String  @id
   url          String
-  isPrivate      Boolean @default(false)
+  duration       Float
+  isPrivate    Boolean @default(false)
   allowedUsers User[]
+  views        View[]
 }
 
 model User {
   login         String  @id
   privateVideos Video[]
+  views         View[]
+}
+
+model View {
+  user                 User     @relation(fields: [userLogin], references: [login])
+  video                Video    @relation(fields: [videoTitle], references: [title])
+  timestamp            DateTime
+  completionPercentage Float
+  userLogin            String
+  videoTitle           String
+
+  @@id([userLogin, videoTitle, timestamp])
 }

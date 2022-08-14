@@ -25,10 +25,14 @@ export class VideoFinderService {
 
     try {
       const scanPath = this.config.get('VIDEO_SCANPATH');
-      const files = await this.fileLoader.scanFolder(scanPath);
+      const files = await this.fileLoader.advancedScanFolder(scanPath);
 
-      const videos: CreateVideoDto[] = files.map((fileName) => {
-        return { title: parse(fileName).name, url: join(scanPath, fileName) };
+      const videos: CreateVideoDto[] = files.map((videoMeta) => {
+        return {
+          title: videoMeta.name,
+          url: videoMeta.fullPath,
+          duration: videoMeta.duration,
+        };
       });
 
       const result = await this.videoService.createVideos(videos);
