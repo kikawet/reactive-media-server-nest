@@ -28,4 +28,8 @@ export class VideoService {
   ): Promise<Prisma.BatchPayload> {
     return this.db.video.createMany({ data, skipDuplicates: true });
   }
+
+  video(where: Prisma.VideoWhereUniqueInput): Promise<Video | null> {
+    return this.db.video.findUnique({ where });
+  }
 }

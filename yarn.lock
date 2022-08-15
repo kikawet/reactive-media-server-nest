@@ -1487,6 +1487,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/mime-types@npm:^2.1.1":
+  version: 2.1.1
+  resolution: "@types/mime-types@npm:2.1.1"
+  checksum: 106b5d556add46446a579ad25ff15d6b421851790d887edcad558c90c1e64b1defc72bfbaf4b08f208916e21d9cc45cdb951d77be51268b18221544cfe054a3c
+  languageName: node
+  linkType: hard
+
 "@types/mime@npm:*":
   version: 3.0.1
   resolution: "@types/mime@npm:3.0.1"
@@ -3338,7 +3345,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fastify@npm:4.4.0":
+"fastify@npm:4.4.0, fastify@npm:^4.4.0":
   version: 4.4.0
   resolution: "fastify@npm:4.4.0"
   dependencies:
@@ -4985,7 +4992,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mime-types@npm:^2.1.12, mime-types@npm:^2.1.27":
+"mime-types@npm:^2.1.12, mime-types@npm:^2.1.27, mime-types@npm:^2.1.35":
   version: 2.1.35
   resolution: "mime-types@npm:2.1.35"
   dependencies:
@@ -5734,6 +5741,7 @@ __metadata:
     "@types/ffprobe": ^1.1.3
     "@types/ffprobe-static": ^2.0.1
     "@types/jest": 28.1.4
+    "@types/mime-types": ^2.1.1
     "@types/node": ^16.0.0
     "@types/supertest": ^2.0.11
     "@typescript-eslint/eslint-plugin": ^5.0.0
@@ -5743,10 +5751,12 @@ __metadata:
     eslint: ^8.0.1
     eslint-config-prettier: ^8.3.0
     eslint-plugin-prettier: ^4.0.0
+    fastify: ^4.4.0
     ffprobe: ^1.1.2
     ffprobe-static: ^3.1.0
     jest: 28.1.2
     joi: ^17.6.0
+    mime-types: ^2.1.35
     prettier: ^2.3.2
     prisma: ^4.0.0
     reflect-metadata: ^0.1.13
