@@ -44,6 +44,13 @@ export class VideoController {
       );
     }
 
+    if (video.isPrivate) {
+      throw new HttpException(
+        `Video with title '${title}' is private`,
+        HttpStatus.FORBIDDEN,
+      );
+    }
+
     const rx = createReadStream(video.url);
     const responseMimeType = lookup(video.url);
     if (responseMimeType) res.header('Content-Type', responseMimeType);
