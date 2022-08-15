@@ -1,10 +1,10 @@
 import { Controller, Get, Res } from '@nestjs/common';
-import type { Response } from 'express';
+import { FastifyReply } from 'fastify';
 
 @Controller()
 export class AppController {
   @Get()
-  redirect(@Res() res: Response) {
+  redirect(@Res() res: FastifyReply) {
     res.status(302).redirect('/video');
   }
 }

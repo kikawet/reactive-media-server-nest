@@ -1,7 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { join, parse } from 'path';
 import { FileLoaderService } from 'rms/file-loader';
 import { CreateVideoDto } from '../video/dto/create-video.dto';
 import { VideoService } from '../video/video.service';
