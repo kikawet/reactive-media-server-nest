@@ -9,4 +9,8 @@ export class UserService {
   async createUser(data: Prisma.UserCreateInput): Promise<User> {
     return this.db.user.create({ data });
   }
+
+  user(where: Prisma.UserWhereUniqueInput): Promise<User | null> {
+    return this.db.user.findUnique({ where });
+  }
 }

@@ -13,7 +13,7 @@ datasource db {
 model Video {
   title        String  @id
   url          String
-  duration       Float
+  duration     Float
   isPrivate    Boolean @default(false)
   allowedUsers User[]
   views        View[]
@@ -22,7 +22,7 @@ model Video {
 model User {
   login         String  @id
   privateVideos Video[]
-  views         View[]
+  history       View[]
 }
 
 model View {

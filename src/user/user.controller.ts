@@ -1,14 +1,51 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpException,
+  HttpStatus,
+  Logger,
+  Param,
+  Post,
+} from '@nestjs/common';
+import { User as UserModel, View as ViewModel } from '@prisma/client';
+import { ViewService } from '../view/view.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserService } from './user.service';
-import { User as UserModel } from '@prisma/client';
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  private readonly logger = new Logger(UserController.name);
+
+  constructor(
+    private readonly userService: UserService,
+    private readonly viewService: ViewService,
+  ) {}
+
+  @Get(':login/history')
+  getHistoryByLogin(@Param('login') login: string): Promise<ViewModel[]> {
+    return this.viewService.views({
+      where: {
+        userLogin: login,
+      },
+      select: {
+        videoTitle: true,
+        timestamp: true,
+        completionPercentage: true,
+      },
+    });
+  }
 
   @Post()
-  create(@Body() user: CreateUserDto): Promise<UserModel> {
+  async create(@Body() user: CreateUserDto): Promise<UserModel> {
+    const dbUser = await this.userService.user({
+      login: user.login,
+    });
+
+    if (dbUser !== null) {
+      throw new HttpException(dbUser, HttpStatus.CONFLICT);
+    }
+
     return this.userService.createUser(user);
   }
 }
