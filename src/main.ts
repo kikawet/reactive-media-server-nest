@@ -1,14 +1,14 @@
 import { Logger, ValidationPipe } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
+import { AppConfigModule } from '@rms/config/app-config.module';
+import { readFileSync } from 'fs';
 import { AppModule } from './app.module';
 import { PrismaService } from './prisma/prisma.service';
-import { readFileSync } from 'fs';
-import { ConfigService } from '@nestjs/config';
-import { AppConfigModule } from './config/app-config.module';
 
 declare const module: any;
 

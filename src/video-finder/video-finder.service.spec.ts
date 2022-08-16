@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { FileLoaderModule } from 'rms/file-loader';
-import { AppConfigModule } from '../config/app-config.module';
+import { AppConfigModule } from '@rms/config/app-config.module';
+import { FileLoaderModule } from '@rms/file-loader';
 import { VideoModule } from '../video/video.module';
 import { VideoFinderService } from './video-finder.service';
 

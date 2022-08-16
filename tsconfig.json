@@ -18,11 +18,17 @@
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "paths": {
-      "rms/file-loader": [
+      "@rms/file-loader": [
         "libs/file-loader/src"
       ],
-      "rms/file-loader/*": [
+      "@rms/file-loader/*": [
         "libs/file-loader/src/*"
+      ],
+      "@rms/config": [
+        "libs/config/src"
+      ],
+      "@rms/config/*": [
+        "libs/config/src/*"
       ]
     }
   }
