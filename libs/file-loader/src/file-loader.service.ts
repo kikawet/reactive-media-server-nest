@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
+import * as ffprobe from 'ffprobe';
+import * as ffprobeStatic from 'ffprobe-static';
 import { PathLike } from 'fs';
 import { readdir } from 'fs/promises';
 import { join, parse } from 'path';
-import * as ffprobe from 'ffprobe';
-import * as ffprobeStatic from 'ffprobe-static';
 import { VideoMetadaDto } from './dto/video-metadata.dto';
 
 @Injectable()

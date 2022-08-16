@@ -1,12 +1,11 @@
 import { Module } from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
+import { AppConfigModule } from '@rms/config/app-config.module';
 import { FileLoaderService } from '@rms/file-loader';
+import { ResourcesModule } from '@rms/resources';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AppConfigModule } from '@rms/config/app-config.module';
 import { VideoFinderService } from './video-finder/video-finder.service';
-import { ResourcesModule } from '@rms/resources';
-import { VideoModule } from '@rms/resources/video';
 
 @Module({
   imports: [AppConfigModule, ResourcesModule, ScheduleModule.forRoot()],

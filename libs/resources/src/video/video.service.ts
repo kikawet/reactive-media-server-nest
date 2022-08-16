@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { Prisma as dbType, Video } from '@prisma/client';
 import { DatabaseService } from '@rms/database';
-import { Video, Prisma as dbType } from '@prisma/client';
 
 @Injectable()
 export class VideoService {
