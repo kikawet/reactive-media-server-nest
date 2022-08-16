@@ -18,6 +18,8 @@
     "@rms/database/(.*)": "<rootDir>/../libs/database/src/$1",
     "@rms/database": "<rootDir>/../libs/database/src",
     "@rms/auth/(.*)": "<rootDir>/../libs/auth/src/$1",
-    "@rms/auth": "<rootDir>/../libs/auth/src"
+    "@rms/auth": "<rootDir>/../libs/auth/src",
+    "@rms/resources/(.*)": "<rootDir>/../libs/resources/src/$1",
+    "@rms/resources": "<rootDir>/../libs/resources/src"
   }
 }

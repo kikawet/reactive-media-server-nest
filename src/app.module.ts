@@ -6,8 +6,8 @@ import { AppService } from './app.service';
 import { AppConfigModule } from '@rms/config/app-config.module';
 import { VideoFinderService } from './video-finder/video-finder.service';
 import { VideoModule } from './video/video.module';
-import { UserModule } from './user/user.module';
 import { ViewModule } from './view/view.module';
+import { UserModule } from './user/user.module';
 @Module({
   imports: [
     AppConfigModule,

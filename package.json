@@ -93,7 +93,8 @@
       "^@rms/file-loader(|/.*)$": "<rootDir>/libs/file-loader/src/$1",
       "^@rms/config(|/.*)$": "<rootDir>/libs/config/src/$1",
       "^@rms/database(|/.*)$": "<rootDir>/libs/database/src/$1",
-      "^@rms/auth(|/.*)$": "<rootDir>/libs/auth/src/$1"
+      "^@rms/auth(|/.*)$": "<rootDir>/libs/auth/src/$1",
+      "^@rms/resources(|/.*)$": "<rootDir>/libs/resources/src/$1"
     }
   }
 }

@@ -41,6 +41,12 @@
       ],
       "@rms/auth/*": [
         "libs/auth/src/*"
+      ],
+      "@rms/resources": [
+        "libs/resources/src"
+      ],
+      "@rms/resources/*": [
+        "libs/resources/src/*"
       ]
     }
   }
