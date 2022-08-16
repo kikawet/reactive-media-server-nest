@@ -5,17 +5,11 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AppConfigModule } from '@rms/config/app-config.module';
 import { VideoFinderService } from './video-finder/video-finder.service';
-import { VideoModule } from './video/video.module';
-import { ViewModule } from './view/view.module';
-import { UserModule } from './user/user.module';
+import { ResourcesModule } from '@rms/resources';
+import { VideoModule } from '@rms/resources/video';
+
 @Module({
-  imports: [
-    AppConfigModule,
-    ScheduleModule.forRoot(),
-    VideoModule,
-    UserModule,
-    ViewModule,
-  ],
+  imports: [AppConfigModule, ResourcesModule, ScheduleModule.forRoot()],
   controllers: [AppController],
   providers: [
     AppService,

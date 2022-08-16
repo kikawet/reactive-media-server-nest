@@ -6,9 +6,9 @@ import {
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { AppConfigModule } from '@rms/config/app-config.module';
+import { DatabaseService } from '@rms/database';
 import { readFileSync } from 'fs';
 import { AppModule } from './app.module';
-import { PrismaService } from './prisma/prisma.service';
 
 declare const module: any;
 
@@ -39,7 +39,7 @@ async function bootstrap() {
     }),
   );
 
-  const prismaService = app.get(PrismaService);
+  const prismaService = app.get(DatabaseService);
   await prismaService.enableShutdownHooks(app);
 
   const port = configService.get('PORT');

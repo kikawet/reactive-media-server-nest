@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppConfigModule } from '@rms/config/app-config.module';
 import { FileLoaderModule } from '@rms/file-loader';
-import { VideoModule } from '../video/video.module';
+import { VideoModule } from '@rms/resources/video';
 import { VideoFinderService } from './video-finder.service';
 
 describe('VideoFinderService', () => {

@@ -2,8 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { FileLoaderService } from '@rms/file-loader';
-import { CreateVideoDto } from '../video/dto/create-video.dto';
-import { VideoService } from '../video/video.service';
+import { VideoService, CreateVideoDto } from '@rms/resources/video';
 
 @Injectable()
 export class VideoFinderService {

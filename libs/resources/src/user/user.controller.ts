@@ -9,7 +9,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { User as UserModel, View as ViewModel } from '@prisma/client';
-import { ViewService } from '../view/view.service';
+import { ViewService } from '@rms/resources/view';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserService } from './user.service';
 
