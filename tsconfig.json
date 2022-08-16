@@ -29,6 +29,12 @@
       ],
       "@rms/config/*": [
         "libs/config/src/*"
+      ],
+      "@rms/database": [
+        "libs/database/src"
+      ],
+      "@rms/database/*": [
+        "libs/database/src/*"
       ]
     }
   }

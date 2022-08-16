@@ -1,13 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { DatabaseModule } from '@rms/database';
 import { VideoService } from './video.service';
-import { PrismaService } from '../prisma/prisma.service';
 
 describe('VideoService', () => {
   let service: VideoService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [VideoService, PrismaService],
+      imports: [DatabaseModule],
+      providers: [VideoService],
     }).compile();
 
     service = module.get<VideoService>(VideoService);

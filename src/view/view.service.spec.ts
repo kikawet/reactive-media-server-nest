@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { PrismaModule } from '../prisma/prisma.module';
+import { DatabaseModule } from '@rms/database';
 import { ViewService } from './view.service';
 
 describe('ViewService', () => {
@@ -7,7 +7,7 @@ describe('ViewService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [PrismaModule],
+      imports: [DatabaseModule],
       providers: [ViewService],
     }).compile();
 

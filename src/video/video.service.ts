@@ -1,17 +1,17 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
-import { Video, Prisma } from '@prisma/client';
+import { DatabaseService } from '@rms/database';
+import { Video, Prisma as dbType } from '@prisma/client';
 
 @Injectable()
 export class VideoService {
-  constructor(private readonly db: PrismaService) {}
+  constructor(private readonly db: DatabaseService) {}
 
   async videos(params: {
     skip?: number;
     take?: number;
-    cursor?: Prisma.VideoWhereUniqueInput;
-    where?: Prisma.VideoWhereInput;
-    orderBy?: Prisma.VideoOrderByWithRelationInput;
+    cursor?: dbType.VideoWhereUniqueInput;
+    where?: dbType.VideoWhereInput;
+    orderBy?: dbType.VideoOrderByWithRelationInput;
   }): Promise<Video[]> {
     const { skip, take, cursor, where, orderBy } = params;
     return this.db.video.findMany({
@@ -24,12 +24,12 @@ export class VideoService {
   }
 
   async createVideos(
-    data: Prisma.VideoCreateManyInput[],
-  ): Promise<Prisma.BatchPayload> {
+    data: dbType.VideoCreateManyInput[],
+  ): Promise<dbType.BatchPayload> {
     return this.db.video.createMany({ data, skipDuplicates: true });
   }
 
-  video(where: Prisma.VideoWhereUniqueInput): Promise<Video | null> {
+  video(where: dbType.VideoWhereUniqueInput): Promise<Video | null> {
     return this.db.video.findUnique({ where });
   }
 }
