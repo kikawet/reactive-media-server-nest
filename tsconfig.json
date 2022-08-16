@@ -35,6 +35,12 @@
       ],
       "@rms/database/*": [
         "libs/database/src/*"
+      ],
+      "@rms/auth": [
+        "libs/auth/src"
+      ],
+      "@rms/auth/*": [
+        "libs/auth/src/*"
       ]
     }
   }
