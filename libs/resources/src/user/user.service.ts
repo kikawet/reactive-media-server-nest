@@ -12,6 +12,7 @@ export class UserService {
       data,
       select: {
         login: true,
+        isAdmin: true,
         password: false,
       },
     });
