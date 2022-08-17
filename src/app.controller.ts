@@ -1,10 +1,14 @@
 import { Controller, Get, Post, Request, Res, UseGuards } from '@nestjs/common';
+import { AuthService, JwtSkip } from '@rms/auth';
+import { AuthenticatedRequest } from '@rms/auth/dto';
 import { BasicAuthGuard } from '@rms/auth/guards';
-import { UserDto } from '@rms/resources/user';
 import { FastifyReply } from 'fastify';
 
 @Controller()
+@JwtSkip()
 export class AppController {
+  constructor(private readonly authService: AuthService) {}
+
   @Get()
   redirect(@Res() res: FastifyReply) {
     res.status(302).redirect('/video');
@@ -12,7 +16,7 @@ export class AppController {
 
   @UseGuards(BasicAuthGuard)
   @Post('auth/login')
-  login(@Request() req: { user: UserDto }) {
-    return req.user;
+  login(@Request() req: AuthenticatedRequest) {
+    return this.authService.login(req.user);
   }
 }
