@@ -9,7 +9,11 @@ export class EncryptionService {
     this.saltOrRounds = this.config.get('HASH_SALTROUNDS') ?? 15;
   }
 
-  async hash(word: string): Promise<string> {
-    return await encryptor.hash(word, this.saltOrRounds);
+  hash(word: string): Promise<string> {
+    return encryptor.hash(word, this.saltOrRounds);
+  }
+
+  compare(word: string, hash: string): Promise<boolean> {
+    return encryptor.compare(word, hash);
   }
 }

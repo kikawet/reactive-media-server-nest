@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma as dbType } from '@prisma/client';
+import { Prisma as dbType, User } from '@prisma/client';
 import { DatabaseService } from '@rms/database';
 import { UserDto } from './dto/user.dto';
 
@@ -17,10 +17,9 @@ export class UserService {
     });
   }
 
-  user(where: dbType.UserWhereUniqueInput): Promise<UserDto | null> {
+  user(where: dbType.UserWhereUniqueInput): Promise<User | null> {
     return this.db.user.findUnique({
       where,
-      select: { login: true, password: false },
     });
   }
 }
