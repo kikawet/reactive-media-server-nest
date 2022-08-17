@@ -1,16 +1,26 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma as dbType, User } from '@prisma/client';
+import { Prisma as dbType } from '@prisma/client';
 import { DatabaseService } from '@rms/database';
+import { UserDto } from './dto/user.dto';
 
 @Injectable()
 export class UserService {
   constructor(private readonly db: DatabaseService) {}
 
-  async createUser(data: dbType.UserCreateInput): Promise<User> {
-    return this.db.user.create({ data });
+  async createUser(data: dbType.UserCreateInput): Promise<UserDto> {
+    return this.db.user.create({
+      data,
+      select: {
+        login: true,
+        password: false,
+      },
+    });
   }
 
-  user(where: dbType.UserWhereUniqueInput): Promise<User | null> {
-    return this.db.user.findUnique({ where });
+  user(where: dbType.UserWhereUniqueInput): Promise<UserDto | null> {
+    return this.db.user.findUnique({
+      where,
+      select: { login: true, password: false },
+    });
   }
 }

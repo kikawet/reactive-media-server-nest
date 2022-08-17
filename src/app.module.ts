@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
+import { AuthModule } from '@rms/auth';
 import { AppConfigModule } from '@rms/config/app-config.module';
 import { FileLoaderService } from '@rms/file-loader';
 import { ResourcesModule } from '@rms/resources';
@@ -8,7 +9,12 @@ import { AppService } from './app.service';
 import { VideoFinderService } from './video-finder/video-finder.service';
 
 @Module({
-  imports: [AppConfigModule, ResourcesModule, ScheduleModule.forRoot()],
+  imports: [
+    AppConfigModule,
+    ResourcesModule,
+    ScheduleModule.forRoot(),
+    AuthModule,
+  ],
   controllers: [AppController],
   providers: [
     AppService,

@@ -21,6 +21,7 @@ model Video {
 
 model User {
   login         String  @id
+  password      String
   privateVideos Video[]
   history       View[]
 }

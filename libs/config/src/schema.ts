@@ -7,4 +7,5 @@ export const validationSchema = Joi.object({
   HTTP2: Joi.boolean().default(true),
   DATABASE_URL: Joi.string().uri().required(),
   VIDEO_SCANPATH: Joi.string().required(),
+  HASH_SALTROUNDS: Joi.number().default(13),
 });

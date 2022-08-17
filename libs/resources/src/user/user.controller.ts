@@ -8,9 +8,11 @@ import {
   Param,
   Post,
 } from '@nestjs/common';
-import { User as UserModel, View as ViewModel } from '@prisma/client';
+import { View as ViewModel } from '@prisma/client';
+import { EncryptionService } from '@rms/auth/encryption';
 import { ViewService } from '@rms/resources/view';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UserDto } from './dto/user.dto';
 import { UserService } from './user.service';
 
 @Controller('user')
@@ -20,6 +22,7 @@ export class UserController {
   constructor(
     private readonly userService: UserService,
     private readonly viewService: ViewService,
+    private readonly encryptionService: EncryptionService,
   ) {}
 
   @Get(':login/history')
@@ -37,7 +40,7 @@ export class UserController {
   }
 
   @Post()
-  async create(@Body() user: CreateUserDto): Promise<UserModel> {
+  async create(@Body() user: CreateUserDto): Promise<UserDto> {
     const dbUser = await this.userService.user({
       login: user.login,
     });
@@ -46,6 +49,11 @@ export class UserController {
       throw new HttpException(dbUser, HttpStatus.CONFLICT);
     }
 
-    return this.userService.createUser(user);
+    const hashPass = await this.encryptionService.hash(user.password);
+
+    return this.userService.createUser({
+      login: user.login,
+      password: hashPass,
+    });
   }
 }
