@@ -11,9 +11,9 @@ import { VideoFinderService } from './video-finder/video-finder.service';
 @Module({
   imports: [
     AppConfigModule,
+    AuthModule,
     ResourcesModule,
     ScheduleModule.forRoot(),
-    AuthModule,
   ],
   controllers: [AppController],
   providers: [

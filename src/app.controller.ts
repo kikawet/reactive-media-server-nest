@@ -1,5 +1,6 @@
 import { Controller, Get, Post, Request, Res, UseGuards } from '@nestjs/common';
-import { AuthService, JwtSkip } from '@rms/auth';
+import { AuthService } from '@rms/auth';
+import { JwtSkip } from '@rms/auth/decorator';
 import { AuthenticatedRequest } from '@rms/auth/dto';
 import { BasicAuthGuard } from '@rms/auth/guards';
 import { FastifyReply } from 'fastify';

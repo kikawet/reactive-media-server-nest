@@ -23,4 +23,17 @@ export class UserService {
       where,
     });
   }
+
+  async findAll(logins: string[]): Promise<boolean> {
+    return (
+      logins.length ===
+      (await this.db.user.count({
+        where: {
+          login: {
+            in: logins,
+          },
+        },
+      }))
+    );
+  }
 }

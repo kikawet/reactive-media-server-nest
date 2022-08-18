@@ -1,14 +1,16 @@
 import {
   Body,
+  ConflictException,
   Controller,
+  ForbiddenException,
   Get,
-  HttpException,
-  HttpStatus,
   Logger,
   Param,
   Post,
+  Request,
 } from '@nestjs/common';
 import { View as ViewModel } from '@prisma/client';
+import { AuthenticatedRequest } from '@rms/auth/dto';
 import { EncryptionService } from '@rms/auth/encryption';
 import { ViewService } from '@rms/resources/view';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -26,7 +28,14 @@ export class UserController {
   ) {}
 
   @Get(':login/history')
-  getHistoryByLogin(@Param('login') login: string): Promise<ViewModel[]> {
+  getHistoryByLogin(
+    @Param('login') login: string,
+    @Request() { user }: AuthenticatedRequest,
+  ): Promise<ViewModel[]> {
+    if (!user.isAdmin && login !== user.login) {
+      throw new ForbiddenException();
+    }
+
     return this.viewService.views({
       where: {
         userLogin: login,
@@ -40,19 +49,26 @@ export class UserController {
   }
 
   @Post()
-  async create(@Body() user: CreateUserDto): Promise<UserDto> {
+  async create(
+    @Request() { user }: AuthenticatedRequest,
+    @Body() newUser: CreateUserDto,
+  ): Promise<UserDto> {
+    if (!user.isAdmin) {
+      throw new ForbiddenException();
+    }
+
     const dbUser = await this.userService.user({
-      login: user.login,
+      login: newUser.login,
     });
 
     if (dbUser !== null) {
-      throw new HttpException(dbUser, HttpStatus.CONFLICT);
+      throw new ConflictException(dbUser);
     }
 
-    const hashPass = await this.encryptionService.hash(user.password);
+    const hashPass = await this.encryptionService.hash(newUser.password);
 
     return this.userService.createUser({
-      login: user.login,
+      login: newUser.login,
       password: hashPass,
     });
   }

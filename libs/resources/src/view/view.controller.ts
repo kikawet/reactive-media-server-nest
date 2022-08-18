@@ -1,21 +1,38 @@
 import {
   Body,
+  ConflictException,
   Controller,
-  HttpException,
-  HttpStatus,
+  ForbiddenException,
   Post,
+  Request,
 } from '@nestjs/common';
 import { View as ViewModel } from '@prisma/client';
+import { AuthenticatedRequest } from '@rms/auth/dto';
+import { VideoService } from '../video';
 import { CreateViewDto } from './dto/create-view.dto';
 import { ViewService } from './view.service';
 
 @Controller('view')
 export class ViewController {
-  constructor(private readonly viewService: ViewService) {}
+  constructor(
+    private readonly viewService: ViewService,
+    private readonly videoService: VideoService,
+  ) {}
 
   @Post()
-  async create(@Body() view: CreateViewDto): Promise<ViewModel> {
+  async create(
+    @Request() { user }: AuthenticatedRequest,
+    @Body() view: CreateViewDto,
+  ): Promise<ViewModel> {
     const { completionPercentage, timestamp, userLogin, videoTitle } = view;
+    // TODO: when user.isAdmin check if userLogin is in the dataBase
+    if (
+      !user.isAdmin &&
+      (userLogin !== user.login ||
+        !(await this.videoService.isUserAllowed(userLogin, videoTitle)))
+    ) {
+      throw new ForbiddenException();
+    }
 
     const dbView = await this.viewService.view({
       userLogin_videoTitle_timestamp: {
@@ -26,7 +43,7 @@ export class ViewController {
     });
 
     if (dbView !== null) {
-      throw new HttpException(dbView, HttpStatus.CONFLICT);
+      throw new ConflictException(dbView);
     }
 
     return this.viewService.createView({
