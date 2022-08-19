@@ -2,7 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { EncryptionModule } from '@rms/auth/encryption';
 import { DatabaseService } from '@rms/database';
 import { MockFunctionMetadata, ModuleMocker } from 'jest-mock';
-import { ViewModule } from '../view/view.module';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserDto } from './dto/user.dto';
 import { UserController } from './user.controller';
@@ -15,7 +14,7 @@ describe('UserController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [ViewModule, EncryptionModule],
+      imports: [EncryptionModule],
       controllers: [UserController],
       providers: [UserService],
     })
@@ -27,7 +26,10 @@ describe('UserController', () => {
                 .fn()
                 .mockImplementation((u: CreateUserDto): UserDto => {
                   const { password, ...result } = u;
-                  return result;
+                  return {
+                    ...result,
+                    isAdmin: false,
+                  };
                 }),
               findUnique: jest.fn().mockResolvedValue(null),
             },
@@ -56,7 +58,11 @@ describe('UserController', () => {
       password: 'secret',
     };
 
-    const resultUser: any = await controller.create(inputUser);
+    const reqUser = {
+      user: { login: ':D', isAdmin: true },
+    };
+
+    const resultUser: any = await controller.create(reqUser, inputUser);
 
     expect(resultUser).toBeDefined();
     expect(resultUser.password).toBeUndefined();
