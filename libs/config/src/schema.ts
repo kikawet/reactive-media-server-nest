@@ -16,4 +16,9 @@ export const validationSchema = Joi.object({
   JWT_EXPIRATION: Joi.string()
     .default('1d')
     .description('Examples of allowed values at: https://github.com/vercel/ms'),
-});
+  DISCORD_ID: Joi.string().alphanum().optional(),
+  DISCORD_SECRET: Joi.string().alphanum().optional(),
+  DISCORD_CALLBACKURL: Joi.string().uri(),
+})
+  .and('KEY', 'CRT')
+  .and('DISCORD_ID', 'DISCORD_SECRET', 'DISCORD_CALLBACKURL');

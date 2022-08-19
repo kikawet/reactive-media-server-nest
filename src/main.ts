@@ -7,6 +7,7 @@ import {
 } from '@nestjs/platform-fastify';
 import { AppConfigModule } from '@rms/config/app-config.module';
 import { DatabaseService } from '@rms/database';
+import { FastifyInstance } from 'fastify';
 import { readFileSync } from 'fs';
 import { AppModule } from './app.module';
 
@@ -38,6 +39,18 @@ async function bootstrap() {
       ...(configService.get('HTTP2') ? { http2: true } : null),
     }),
   );
+
+  const fastifyInstance: FastifyInstance = app.getHttpAdapter().getInstance();
+  fastifyInstance
+    .addHook('onRequest', async (req: any, res) => {
+      req.socket['encrypted'] = process.env.NODE_ENV === 'production';
+    })
+    .decorateReply('setHeader', function (name: string, value: unknown) {
+      this.header(name, value);
+    })
+    .decorateReply('end', function () {
+      this.send('');
+    });
 
   const prismaService = app.get(DatabaseService);
   await prismaService.enableShutdownHooks(app);

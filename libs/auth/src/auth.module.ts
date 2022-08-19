@@ -1,14 +1,16 @@
 import { Module } from '@nestjs/common';
-import { UserModule } from '@rms/resources/user';
-import { AuthService } from './auth.service';
-import { EncryptionModule } from './encryption/encryption.module';
-import { BasicStrategy } from './strategies/basic.strategy';
+import { ConfigService } from '@nestjs/config';
+import { APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { AppConfigModule } from '@rms/config';
-import { ConfigService } from '@nestjs/config';
-import { JwtStrategy } from './strategies/jwt.strategy';
-import { APP_GUARD } from '@nestjs/core';
+import { UserModule } from '@rms/resources/user';
+import { AuthService } from './auth.service';
+import { ControllerModule } from './controller/controller.module';
+import { EncryptionModule } from './encryption/encryption.module';
 import { JwtAuthGuard } from './guards';
+import { BasicStrategy } from './strategies/basic.strategy';
+import { DiscordStrategy } from './strategies/discord.strategy';
+import { JwtStrategy } from './strategies/jwt.strategy';
 
 @Module({
   imports: [
@@ -22,11 +24,13 @@ import { JwtAuthGuard } from './guards';
       }),
       inject: [ConfigService],
     }),
+    ControllerModule,
   ],
   providers: [
     AuthService,
     BasicStrategy,
     JwtStrategy,
+    DiscordStrategy,
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,

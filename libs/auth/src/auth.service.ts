@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { Prisma as dbType } from '@prisma/client';
 import { UserDto, UserService } from '@rms/resources/user';
 import { JwtPayload } from './dto/jwt-payload.dto';
 import { EncryptionService } from './encryption';
@@ -38,5 +39,18 @@ export class AuthService {
     return {
       access_token: await this.jwtService.signAsync(payload),
     };
+  }
+
+  async validateOauth(newUser: dbType.UserCreateInput): Promise<UserDto> {
+    const user = await this.userService.user({ login: newUser.login });
+
+    if (user === null) {
+      return await this.userService.createUser({
+        login: newUser.login,
+      });
+    }
+
+    const { password, ...result } = user;
+    return result;
   }
 }

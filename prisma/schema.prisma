@@ -21,7 +21,7 @@ model Video {
 
 model User {
   login         String  @id
-  password      String
+  password      String  @default("")
   isAdmin       Boolean @default(false)
   privateVideos Video[]
   history       View[]
