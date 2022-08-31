@@ -11,20 +11,22 @@ datasource db {
 }
 
 model Video {
-  title        String  @id
+  title        String       @id
   url          String
   duration     Float
-  isPrivate    Boolean @default(false)
+  isPrivate    Boolean      @default(false)
   allowedUsers User[]
   views        View[]
+  suggested   Suggestion[]
 }
 
 model User {
-  login         String  @id
-  password      String  @default("")
-  isAdmin       Boolean @default(false)
+  login         String       @id
+  password      String       @default("")
+  isAdmin       Boolean      @default(false)
   privateVideos Video[]
   history       View[]
+  suggestions    Suggestion[]
 }
 
 model View {
@@ -36,4 +38,13 @@ model View {
   videoTitle           String
 
   @@id([userLogin, videoTitle, timestamp])
+}
+
+model Suggestion {
+  user       User   @relation(fields: [userLogin], references: [login])
+  video      Video  @relation(fields: [videoTitle], references: [title])
+  userLogin  String
+  videoTitle String
+
+  @@id([userLogin, videoTitle])
 }
