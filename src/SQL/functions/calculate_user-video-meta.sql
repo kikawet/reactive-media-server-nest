@@ -1,17 +1,18 @@
-CREATE or replace FUNCTION calculate_uvm(timeoffset interval default '5 hours')
-RETURNS Table(
-  "userLogin" text,
-  "videoTitle" text,
-  "score" float8,
-  "lastTimeView" timestamp,
-  "origin" float8
+-- calculate_user-video-meta
+CREATE OR REPLACE FUNCTION calculate_uvm(timeoffset INTERVAL DEFAULT '5 hours')
+RETURNS TABLE(
+  "userLogin" TEXT,
+  "videoTitle" TEXT,
+  "score" FLOAT8,
+  "lastTimeView" TIMESTAMP,
+  "origin" FLOAT8
 ) AS $$
-select w."userLogin",
+SELECT w."userLogin",
  w."videoTitle",
- ema(w."completionPercentage" ORDER BY w."timestamp" DESC) as "score",
- max(w."timestamp") as "lastTimeView",
- COUNT(w."origin") filter (where w."origin" = 'System'::"ViewOrigin")
- from "View" as w
-WHERE w."timestamp" >= (now() - timeoffset)
+ ema(w."completionPercentage" ORDER BY w."timestamp" DESC) AS "score",
+ MAX(w."timestamp") AS "lastTimeView",
+ COUNT(w."origin") FILTER (WHERE w."origin" = 'System'::"ViewOrigin")
+FROM "View" AS w
+WHERE w."timestamp" >= (NOW() - timeoffset)
 GROUP BY w."userLogin", w."videoTitle"
-$$ LANGUAGE sql;
+$$ LANGUAGE SQL;
