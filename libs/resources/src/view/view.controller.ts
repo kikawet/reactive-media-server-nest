@@ -24,7 +24,10 @@ export class ViewController {
     @Request() { user }: AuthenticatedRequest,
     @Body() view: CreateViewDto,
   ): Promise<ViewModel> {
-    const { completionPercentage, timestamp, userLogin, videoTitle } = view;
+    const { completionPercentage, userLogin, videoTitle } = view;
+    let { timestamp } = view;
+    timestamp ??= new Date(new Date().toISOString());
+
     // TODO: when user.isAdmin check if userLogin is in the dataBase
     if (
       !user.isAdmin &&

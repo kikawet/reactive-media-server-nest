@@ -29,13 +29,19 @@ model User {
   suggestions    Suggestion[]
 }
 
+enum ViewOrigin {
+  User
+  System
+}
+
 model View {
   user                 User     @relation(fields: [userLogin], references: [login])
   video                Video    @relation(fields: [videoTitle], references: [title])
-  timestamp            DateTime
+  timestamp            DateTime @default(now())
   completionPercentage Float
   userLogin            String
   videoTitle           String
+  origin               ViewOrigin @default(System)
 
   @@id([userLogin, videoTitle, timestamp])
 }
