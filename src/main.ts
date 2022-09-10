@@ -9,6 +9,7 @@ import { AppConfigModule } from '@rms/config/app-config.module';
 import { DatabaseService } from '@rms/database';
 import { FastifyInstance } from 'fastify';
 import { readFileSync } from 'fs';
+import * as morgan from 'morgan';
 import { AppModule } from './app.module';
 
 declare const module: any;
@@ -37,6 +38,15 @@ async function bootstrap() {
     new FastifyAdapter({
       https: httpsOptions,
       ...(configService.get('HTTP2') ? { http2: true } : null),
+    }),
+  );
+
+  const requestLogger = new Logger('Request');
+  app.use(
+    morgan(configService.getOrThrow('REQUEST_LOGGER_FORMAT'), {
+      stream: {
+        write: (message) => requestLogger.log(message.replace('\n', '')),
+      },
     }),
   );
 

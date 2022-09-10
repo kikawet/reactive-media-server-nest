@@ -19,6 +19,11 @@ export const validationSchema = Joi.object({
   DISCORD_ID: Joi.string().alphanum().optional(),
   DISCORD_SECRET: Joi.string().alphanum().optional(),
   DISCORD_CALLBACKURL: Joi.string().uri(),
+  REQUEST_LOGGER_FORMAT: Joi.string()
+    .default('dev')
+    .description(
+      'See morgan formats: https://github.com/expressjs/morgan#predefined-formats',
+    ),
 })
   .and('KEY', 'CRT')
   .and('DISCORD_ID', 'DISCORD_SECRET', 'DISCORD_CALLBACKURL');
