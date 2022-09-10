@@ -44,7 +44,7 @@ model View {
 model Suggestion {
   userLogin  String
   videoTitle String
-  priority   Int
+  priority   Float // Range -1 to 1
   user       User   @relation(fields: [userLogin], references: [login])
   video      Video  @relation(fields: [videoTitle], references: [title])
 
