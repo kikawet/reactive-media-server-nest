@@ -51,6 +51,7 @@ model Suggestion {
   video      Video  @relation(fields: [videoTitle], references: [title])
   userLogin  String
   videoTitle String
+  priority   Int
 
   @@id([userLogin, videoTitle])
 }

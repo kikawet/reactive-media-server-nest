@@ -2,6 +2,6 @@
 
 CREATE OR REPLACE VIEW "NonView" AS
 
-SELECT u.login, v.title FROM "User" as u, "Video" as v
+SELECT u.login as "userLogin", v.title as "videoTitle" FROM "User" as u, "Video" as v
 EXCEPT
 SELECT DISTINCT "userLogin", "videoTitle" from "View"
