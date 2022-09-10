@@ -15,43 +15,43 @@ model Video {
   url          String
   duration     Float
   isPrivate    Boolean      @default(false)
-  allowedUsers User[]
+  suggested    Suggestion[]
   views        View[]
-  suggested   Suggestion[]
+  allowedUsers User[]
 }
 
 model User {
   login         String       @id
   password      String       @default("")
   isAdmin       Boolean      @default(false)
-  privateVideos Video[]
+  suggestions   Suggestion[]
   history       View[]
-  suggestions    Suggestion[]
-}
-
-enum ViewOrigin {
-  User
-  System
+  privateVideos Video[]
 }
 
 model View {
-  user                 User     @relation(fields: [userLogin], references: [login])
-  video                Video    @relation(fields: [videoTitle], references: [title])
-  timestamp            DateTime @default(now())
+  timestamp            DateTime   @default(now())
   completionPercentage Float
   userLogin            String
   videoTitle           String
   origin               ViewOrigin @default(System)
+  user                 User       @relation(fields: [userLogin], references: [login])
+  video                Video      @relation(fields: [videoTitle], references: [title])
 
   @@id([userLogin, videoTitle, timestamp])
 }
 
 model Suggestion {
-  user       User   @relation(fields: [userLogin], references: [login])
-  video      Video  @relation(fields: [videoTitle], references: [title])
   userLogin  String
   videoTitle String
   priority   Int
+  user       User   @relation(fields: [userLogin], references: [login])
+  video      Video  @relation(fields: [videoTitle], references: [title])
 
   @@id([userLogin, videoTitle])
+}
+
+enum ViewOrigin {
+  User
+  System
 }
