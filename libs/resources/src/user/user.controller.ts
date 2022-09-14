@@ -7,12 +7,18 @@ import {
   Logger,
   Param,
   Post,
+  Query,
   Request,
 } from '@nestjs/common';
-import { View as ViewModel } from '@prisma/client';
+import {
+  Suggestion as SuggestionModel,
+  View as ViewModel,
+} from '@prisma/client';
 import { AuthenticatedRequest } from '@rms/auth/dto';
 import { EncryptionService } from '@rms/auth/encryption';
 import { ViewService } from '@rms/resources/view';
+import { QuerySuggestionDto } from '../suggestion';
+import { SuggestionService } from '../suggestion/suggestion.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserDto } from './dto/user.dto';
 import { UserService } from './user.service';
@@ -24,6 +30,7 @@ export class UserController {
   constructor(
     private readonly userService: UserService,
     private readonly viewService: ViewService,
+    private readonly suggestionService: SuggestionService,
     private readonly encryptionService: EncryptionService,
   ) {}
 
@@ -44,6 +51,27 @@ export class UserController {
         videoTitle: true,
         timestamp: true,
         completionPercentage: true,
+      },
+    });
+  }
+
+  @Get(':login/suggestion')
+  getSuggestionsByLogin(
+    @Param('login') login: string,
+    @Request() { user }: AuthenticatedRequest,
+    @Query() { limit = 5 }: QuerySuggestionDto,
+  ): Promise<SuggestionModel[]> {
+    if (!user.isAdmin && login !== user.login) {
+      throw new ForbiddenException();
+    }
+
+    return this.suggestionService.suggestions({
+      take: limit,
+      where: {
+        userLogin: login,
+      },
+      orderBy: {
+        priority: 'desc',
       },
     });
   }
